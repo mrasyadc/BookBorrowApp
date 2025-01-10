@@ -64,5 +64,16 @@
                 {{ __('Log in') }}
             </x-primary-button>
         </div>
+
+        <div>
+            <hr class="my-4 h-px border-0 bg-gray-200 dark:bg-gray-700" />
+            <!-- Register Link -->
+            <p class="text-sm text-gray-600 dark:text-gray-400">
+                {{ __("Don't have an account?") }}
+                <a href="{{ route('register') }}" class="text-indigo-600 hover:text-indigo-900 dark:text-indigo-400">
+                    {{ __('Register') }}
+                </a>
+            </p>
+        </div>
     </form>
 </x-guest-layout>
