@@ -16,10 +16,16 @@
                     <x-nav-link :href="route('admin.bookmaster')">
                         {{ __('Book Master Data') }}
                     </x-nav-link>
+                    <x-nav-link :href="route('admin.report')">
+                        {{ __('Report') }}
+                    </x-nav-link>
                 @else
                     {{-- TODO: ganti ke routesnya transaksi peminjaman --}}
                     <x-nav-link :href="route('user.borrow-transaction')" :active="request()->routeIs('')">
                         {{ __('Transaksi Peminjaman') }}
+                    </x-nav-link>
+                    <x-nav-link :href="route('user.report')">
+                        {{ __('Report') }}
                     </x-nav-link>
                 @endif
                 </div>
