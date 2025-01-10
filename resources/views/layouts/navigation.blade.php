@@ -12,9 +12,16 @@
 
                 <!-- Navigation Links -->
                 <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
-                    <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
-                        {{ __('Dashboard') }}
+                    @if (Auth::user()->role == 'admin')
+                    <x-nav-link :href="route('admin.bookmaster')">
+                        {{ __('Book Master Data') }}
                     </x-nav-link>
+                @else
+                    {{-- TODO: ganti ke routesnya transaksi peminjaman --}}
+                    <x-nav-link :href="route('user.borrow-transaction')" :active="request()->routeIs('')">
+                        {{ __('Transaksi Peminjaman') }}
+                    </x-nav-link>
+                @endif
                 </div>
             </div>
 
