@@ -45,9 +45,10 @@ Route::middleware('auth')->group(function () {
         Route::get('/admin/books', [BookMasterDataController::class, 'index'])->name('admin.bookmaster.read');
         Route::get('/admin/books/edit/{bookId}', [BookMasterDataController::class, 'edit'])->name('admin.bookmaster.edit');
         Route::post('/admin/books/edit/{bookId}', [BookMasterDataController::class, 'update'])->name('admin.bookmaster.update');
-        Route::get('/admin/report', function () {
-            return view('dashboard');
-        })->name('admin.report');
+        Route::post('/admin/books/delete/{bookId}', [BookMasterDataController::class, 'destroy'])->name('admin.bookmaster.destroy');
+        Route::get('/admin/books/create', [BookMasterDataController::class, 'create'])->name('admin.bookmaster.create');
+        Route::post('/admin/books/create', [BookMasterDataController::class, 'store'])->name('admin.bookmaster.store');
+        Route::get('/admin/report', function () {})->name('admin.report.read');
     });
 
     Route::middleware(CheckUserType::class . ':user')->group(function () {
