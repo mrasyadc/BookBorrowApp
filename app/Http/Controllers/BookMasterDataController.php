@@ -24,4 +24,33 @@ class BookMasterDataController extends Controller
         // Return the view with the book
         return view('admin.bookmaster.edit', ['book' => $book]);
     }
+
+    public function update(Request $request, $bookId)
+    {
+        // dd($request->all());
+        // Validate the request
+
+        // TODO:
+        // masih errorrrr karena $book->save() ga dijalankan entah kenapa???
+        $request->validate([
+            'title' => 'required',
+            'author' => 'required',
+            'price_per_day' => 'required|numeric',
+        ]);
+
+        // Find the book
+        $book = Book::find($bookId);
+
+        // Update the book
+        $book->title = $request->title;
+        $book->author = $request->author;
+        $book->price_per_day = $request->price_per_day;
+        // Save the book
+        $book->save();
+
+
+
+        // Redirect to the bookmaster page
+        return redirect()->route('admin.bookmaster.read');
+    }
 }

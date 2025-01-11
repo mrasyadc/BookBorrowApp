@@ -16,7 +16,7 @@ Route::get('/dashboard', function () {
 
     // Check user role and redirect accordingly
     if ($user->role === 'admin') {
-        return redirect()->route('admin.bookmaster');  // Redirect to admin dashboard
+        return redirect()->route('admin.bookmaster.read');  // Redirect to admin dashboard
     }
 
     return redirect()->route('user.borrow-transaction');  // Redirect to user dashboard
@@ -42,8 +42,9 @@ Route::middleware('auth')->group(function () {
 
 
     Route::middleware(CheckUserType::class . ':admin')->group(function () {
-        Route::get('/admin/books', [BookMasterDataController::class, 'index'])->name('admin.bookmaster');
+        Route::get('/admin/books', [BookMasterDataController::class, 'index'])->name('admin.bookmaster.read');
         Route::get('/admin/books/edit/{bookId}', [BookMasterDataController::class, 'edit'])->name('admin.bookmaster.edit');
+        Route::post('/admin/books/edit/{bookId}', [BookMasterDataController::class, 'update'])->name('admin.bookmaster.update');
         Route::get('/admin/report', function () {
             return view('dashboard');
         })->name('admin.report');

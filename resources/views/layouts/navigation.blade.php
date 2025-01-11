@@ -13,7 +13,7 @@
                 <!-- Navigation Links -->
                 <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
                     @if (Auth::user()->role == 'admin')
-                        <x-nav-link :href="route('admin.bookmaster')">
+                        <x-nav-link :href="route('admin.bookmaster.read')">
                             {{ __('Book Master Data') }}
                         </x-nav-link>
                         <x-nav-link :href="route('admin.report')">

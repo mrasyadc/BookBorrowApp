@@ -1,6 +1,6 @@
 <x-app-layout>
     <x-slot name="header">
-        {{-- @dd($book) --}}
+        {{-- @dd(route('admin.bookmaster.update', 1)) --}}
         <h2 class="text-xl font-semibold leading-tight text-gray-800 dark:text-gray-200">
             {{ __('Update Book') }}
         </h2>
@@ -8,7 +8,9 @@
     <section class="bg-white dark:bg-gray-900">
         <div class="mx-auto max-w-7xl py-8 sm:px-6 lg:px-8 lg:py-16">
             <h2 class="mb-4 text-xl font-bold text-gray-900 dark:text-white">Update Book</h2>
-            <form action="#">
+
+            <form action="{{route('admin.bookmaster.update',$book->id)}}" method="POST">
+                @csrf
                 <div class="mb-4 grid gap-4 sm:mb-5 sm:grid-cols-2 sm:gap-6">
                     <div class="sm:col-span-2">
                         <label for="title" class="mb-2 block text-sm font-medium text-gray-900 dark:text-white">
@@ -52,6 +54,17 @@
                             required=""
                         />
                     </div>
+
+                    @if ($errors->any())
+                        <div class="alert alert-danger">
+                            <ul>
+                                @foreach ($errors->all() as $error)
+                                    <li>{{ $error }}</li>
+                                @endforeach
+                            </ul>
+                        </div>
+                    @endif
+
 
                 <div class="flex items-center space-x-4">
                     <button

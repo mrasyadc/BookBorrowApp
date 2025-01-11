@@ -16,7 +16,7 @@
                                 </th>
                                 <th scope="col" class="px-6 py-3">Book Name</th>
                                 <th scope="col" class="px-6 py-3">Author</th>
-                                <th scope="col" class="px-6 py-3">Price</th>
+                                <th scope="col" class="px-6 py-3">Price (Indonesian Rupiah)</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -34,19 +34,16 @@
                                         {{ $book->title }}
                                     </th>
                                     <td class="px-6 py-4">{{ $book->author }}</td>
-                                    <td class="px-6 py-4">{{ $book->price_per_day }}</td>
+                                    {{-- show price per day in IDR format --}}
+                                    <td class="px-6 py-4">
+                                        {{ Number::currency($book->price_per_day, in: $currency) }}
+                                    </td>
                                     <td class="flex items-center px-6 py-4">
                                         <a
-                                            href="#"
+                                            href="{{ route('admin.bookmaster.edit', $book->id) }}"
                                             class="font-medium text-blue-600 hover:underline dark:text-blue-500"
                                         >
                                             Edit
-                                        </a>
-                                        <a
-                                            href="#"
-                                            class="ms-3 font-medium text-red-600 hover:underline dark:text-red-500"
-                                        >
-                                            Remove
                                         </a>
                                     </td>
                                 </tr>
