@@ -12,9 +12,7 @@
                         <thead class="bg-gray-50 text-xs uppercase text-gray-700 dark:bg-gray-700 dark:text-gray-400">
                             <tr>
                                 <th scope="col" class="p-4">
-                                    <div class="flex items-center">
-                                     id
-                                    </div>
+                                    <div class="flex items-center">id</div>
                                 </th>
                                 <th scope="col" class="px-6 py-3">Book Name</th>
                                 <th scope="col" class="px-6 py-3">Author</th>
@@ -27,7 +25,7 @@
                                     class="border-b bg-white hover:bg-gray-50 dark:border-gray-700 dark:bg-gray-800 dark:hover:bg-gray-600"
                                 >
                                     <td class="w-4 p-4">
-                                        {{$book->id}}
+                                        {{ $book->id }}
                                     </td>
                                     <th
                                         scope="row"
@@ -35,8 +33,8 @@
                                     >
                                         {{ $book->title }}
                                     </th>
-                                    <td class="px-6 py-4">{{$book->author}}</td>
-                                    <td class="px-6 py-4">{{$book->price_per_day}}</td>
+                                    <td class="px-6 py-4">{{ $book->author }}</td>
+                                    <td class="px-6 py-4">{{ $book->price_per_day }}</td>
                                     <td class="flex items-center px-6 py-4">
                                         <a
                                             href="#"

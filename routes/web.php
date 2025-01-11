@@ -43,6 +43,7 @@ Route::middleware('auth')->group(function () {
 
     Route::middleware(CheckUserType::class . ':admin')->group(function () {
         Route::get('/admin/books', [BookMasterDataController::class, 'index'])->name('admin.bookmaster');
+        Route::get('/admin/books/edit/{bookId}', [BookMasterDataController::class, 'edit'])->name('admin.bookmaster.edit');
         Route::get('/admin/report', function () {
             return view('dashboard');
         })->name('admin.report');
