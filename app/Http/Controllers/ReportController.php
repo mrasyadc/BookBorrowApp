@@ -2,11 +2,22 @@
 
 namespace App\Http\Controllers;
 
+use App\Services\CalculationService;
+use Artisaninweb\SoapWrapper\Facade;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Config as FacadesConfig;
+
 
 class ReportController extends Controller
 {
+
+    protected $calculationService;
+
+    public function __construct(CalculationService $calculationService)
+    {
+        $this->calculationService = $calculationService;
+    }
     //
     public function index()
     {
@@ -17,8 +28,9 @@ class ReportController extends Controller
     {
         // For all users
         $reports = DB::select('CALL GetAllBorrowReports');
-        // @dd($reports);
-        // For specific user
+        foreach ($reports as $report) {
+            $report->total_cost = $this->calculationService->multiply($report->total_days, $report->price_per_day);
+        }
         return view('admin.report.report', ['reports' => $reports]);
     }
 

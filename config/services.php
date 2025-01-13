@@ -34,5 +34,8 @@ return [
             'channel' => env('SLACK_BOT_USER_DEFAULT_CHANNEL'),
         ],
     ],
+    'calculation' => [
+        'url' => 'http://www.dneonline.com/calculator.asmx?WSDL',
+    ],
 
 ];
