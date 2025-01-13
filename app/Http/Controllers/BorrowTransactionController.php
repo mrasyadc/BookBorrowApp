@@ -95,4 +95,26 @@ class BorrowTransactionController extends Controller
 
         return view('user.borrowTransaction.return', ['unreturnedTransactions' => $transactionsWithCost]);
     }
+
+    public function returnBookPost(Request $request)
+    {
+        // Validate the request
+        $validated = $request->validate([
+            'transactionId' => 'required|exists:borrow_transactions,id',
+        ]);
+
+        $transactionId = $validated['transactionId'];
+
+        // Find the transaction
+        $transaction = BorrowTransaction::findOrFail($transactionId);
+
+        // Set the actual return date
+        $transaction->actual_return_date = now();
+
+        // Save the transaction
+        $transaction->save();
+
+        // Redirect to the return transaction page
+        return redirect()->route('user.return-transaction');
+    }
 }

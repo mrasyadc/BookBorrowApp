@@ -24,6 +24,9 @@
                         <x-nav-link :href="route('user.borrow-transaction')" :active="request()->routeIs('')">
                             {{ __('Borrow Books') }}
                         </x-nav-link>
+                        <x-nav-link :href="route('user.return-transaction')">
+                            {{ __('Return Books') }}
+                        </x-nav-link>
                         <x-nav-link :href="route('user.report')">
                             {{ __('Report') }}
                         </x-nav-link>
