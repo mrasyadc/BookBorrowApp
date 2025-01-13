@@ -48,9 +48,13 @@ class ExportService
      * @param string $fileName
      * @return \Illuminate\Http\Response
      */
-    public function exportToPdf(string $view, array $data, string $fileName)
+    public function exportToPDF($view, $filename, $data, $headers)
     {
-        $pdf = Pdf::loadView($view, $data);
-        return $pdf->download($fileName);
+        $pdf = Pdf::loadView($view, [
+            'headers' => $headers,
+            'data' => $data,
+        ]);
+
+        return $pdf->download($filename);
     }
 }

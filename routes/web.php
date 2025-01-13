@@ -51,6 +51,7 @@ Route::middleware('auth')->group(function () {
         Route::post('/admin/books/create', [BookMasterDataController::class, 'store'])->name('admin.bookmaster.store');
         Route::get('/admin/report', [ReportController::class, 'allBorrowReports'])->name('admin.report.read');
         Route::get('/admin/report/export/excel', [ReportController::class, 'allBorrowReportsExcel'])->name('admin.report.excel');
+        Route::get('/admin/report/export/pdf', [ReportController::class, 'allBorrowReportsPDF'])->name('admin.report.pdf');
     });
 
     Route::middleware(CheckUserType::class . ':user')->group(function () {

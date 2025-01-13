@@ -64,6 +64,31 @@ class ReportController extends Controller
         return $this->exportService->exportToExcel('AllBorrowReports.xlsx', $reportsArray, $headers);
     }
 
+    public function allBorrowReportsPDF()
+    {
+        $reports = DB::select('CALL GetAllBorrowReports');
+
+        // Add calculated field for each report
+        foreach ($reports as $report) {
+            $report->total_cost = $this->calculationService->multiply($report->total_days, $report->price_per_day);
+        }
+
+        // Convert reports to an array to dynamically extract headers
+        $reportsArray = array_map(function ($report) {
+            return (array) $report; // Cast each object to an array
+        }, $reports);
+
+        // Extract headers dynamically
+        $headers = !empty($reportsArray) ? array_keys($reportsArray[0]) : [];
+
+        // Add 'Total Cost' to the headers (if it doesn't already exist)
+        if (!in_array('total_cost', $headers)) {
+            $headers[] = 'total_cost';
+        }
+
+        return $this->exportService->exportToPdf('template.borrow', 'borrow_reports.pdf', $reportsArray, $headers);
+    }
+
     public function userBorrowReports(Request $request)
     {
         $userId = $request->route(userId);
