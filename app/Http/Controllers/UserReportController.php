@@ -9,6 +9,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Config as FacadesConfig;
+use App\Models\Book;
 
 class UserReportController extends Controller
 {
@@ -21,11 +22,6 @@ class UserReportController extends Controller
     {
         $this->calculationService = $calculationService;
         $this->exportService = $exportService;
-    }
-
-    public function index()
-    {
-        return view('user.borrowTransaction.read');
     }
 
     public function userBorrowReportsExcel()

@@ -5,6 +5,7 @@ use App\Http\Controllers\BookMasterDataController;
 use App\Http\Controllers\ReportController;
 use App\Http\Controllers\UserReportController;
 use App\Http\Middleware\CheckUserType;
+use App\Http\Controllers\BorrowTransactionController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
@@ -60,7 +61,8 @@ Route::middleware('auth')->group(function () {
         //     return redirect()->route('admin.books');
         // });
 
-        Route::get('/user/borrow-transaction', [UserReportController::class, 'index'])->name('user.borrow-transaction');
+        Route::get('/user/borrow-transaction', [BorrowTransactionController::class, 'index'])->name('user.borrow-transaction');
+        Route::post('/user/borrow-transaction/{bookId}', [BorrowTransactionController::class, 'store'])->name('user.borrow-transaction.store');
 
         Route::get('/user/report', [UserReportController::class, 'userBorrowReports'])->name('user.report');
         Route::get('/admin/report/export/excel', [UserReportController::class, 'userBorrowReportsExcel'])->name('user.report.excel');

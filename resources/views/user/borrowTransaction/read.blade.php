@@ -47,12 +47,19 @@
                                         {{ Number::currency($book->price_per_day, in: $currency) }}
                                     </td>
                                     <td class="flex items-center px-6 py-4">
-                                        <a
-                                            href="{{ route('admin.bookmaster.edit', $book->id) }}"
-                                            class="font-medium text-blue-600 hover:underline dark:text-blue-500"
+                                        <form
+                                            action="{{ route('user.borrow-transaction.store', ['bookId' => $book->id]) }}"
+                                            method="POST"
                                         >
-                                            Edit
-                                        </a>
+                                            @csrf
+
+                                            <button
+                                                class="bg-primary-700 hover:bg-primary-800 focus:ring-primary-300 dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800 rounded-lg px-5 py-2.5 text-center text-sm font-medium text-white focus:outline-none focus:ring-4"
+                                                type="submit"
+                                            >
+                                                Borrow
+                                            </button>
+                                        </form>
                                     </td>
                                 </tr>
                             @endforeach
