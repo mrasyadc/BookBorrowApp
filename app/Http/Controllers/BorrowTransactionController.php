@@ -25,18 +25,41 @@ class BorrowTransactionController extends Controller
         return view('user.borrowTransaction.read', ['books' => $books]);
     }
 
-    public function store($bookId)
+    public function store(Request $request)
     {
+        // @dd($request->all());
+        // Validate the request
+        $validated = $request->validate([
+            'bookId' => 'required|exists:books,id',
+            'start' => 'required|date|after:today',
+            'end' => 'required|date|after:start',
+        ]);
+
+        $bookId = $validated['bookId'];
+        $start = $validated['start'];
+        $end = $validated['end'];
+
+        $totalDays = Carbon::parse($start)->diffInDays(Carbon::parse($end));
+
+
         $book = Book::findOrFail($bookId);
         // using transaction
+
         $borrowTransaction = new BorrowTransaction();
         $borrowTransaction->book_id = $bookId;
         $borrowTransaction->user_id = Auth::id();
-        $borrowTransaction->borrow_date = Carbon::now();
-        $borrowTransaction->total_cost = $this->calculationService->multiply(1, $book->price_per_day);
+        $borrowTransaction->borrow_date = Carbon::parse($start);
+        $borrowTransaction->planned_return_date = Carbon::parse($end);
+        $borrowTransaction->total_cost = $this->calculationService->multiply($totalDays, $book->price_per_day);
         $borrowTransaction->save();
 
         // Redirect to the borrow transaction page
-        return redirect()->route('user.borrow-transaction');
+        return redirect()->route('user.report');
+    }
+
+    public function userBorrowBookShow($bookId)
+    {
+        $book = Book::findOrFail($bookId);
+        return view('user.borrowTransaction.create', ['book' => $book]);
     }
 }

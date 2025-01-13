@@ -4,17 +4,10 @@
             {{ __('Borrow Books') }}
         </h2>
     </x-slot>
+
     <div class="py-12">
         <div class="mx-auto max-w-7xl sm:px-6 lg:px-8">
-            <div class="flex justify-end">
-                <button
-                    onclick="window.location='{{ route('admin.bookmaster.create') }}'"
-                    class="bg-primary-700 hover:bg-primary-800 focus:ring-primary-300 dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800 rounded-lg px-5 py-2.5 text-center text-sm font-medium text-white focus:outline-none focus:ring-4"
-                >
-                    Add new book
-                </button>
-            </div>
-            <div class="mt-4 overflow-hidden bg-white shadow-sm sm:rounded-lg dark:bg-gray-800">
+            <div class="overflow-hidden bg-white shadow-sm sm:rounded-lg dark:bg-gray-800">
                 <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
                     <table class="w-full text-left text-sm text-gray-500 rtl:text-right dark:text-gray-400">
                         <thead class="bg-gray-50 text-xs uppercase text-gray-700 dark:bg-gray-700 dark:text-gray-400">
@@ -47,19 +40,12 @@
                                         {{ Number::currency($book->price_per_day, in: $currency) }}
                                     </td>
                                     <td class="flex items-center px-6 py-4">
-                                        <form
-                                            action="{{ route('user.borrow-transaction.store', ['bookId' => $book->id]) }}"
-                                            method="POST"
+                                        <button
+                                            onclick="window.location='{{ route('user.borrow-transaction.book', $book->id) }}'"
+                                            class="bg-primary-700 hover:bg-primary-800 focus:ring-primary-300 dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800 rounded-lg px-5 py-2.5 text-center text-sm font-medium text-white focus:outline-none focus:ring-4"
                                         >
-                                            @csrf
-
-                                            <button
-                                                class="bg-primary-700 hover:bg-primary-800 focus:ring-primary-300 dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800 rounded-lg px-5 py-2.5 text-center text-sm font-medium text-white focus:outline-none focus:ring-4"
-                                                type="submit"
-                                            >
-                                                Borrow
-                                            </button>
-                                        </form>
+                                            Borrow book
+                                        </button>
                                     </td>
                                 </tr>
                             @endforeach

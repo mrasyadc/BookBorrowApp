@@ -55,14 +55,20 @@
                     </div>
 
                     @if ($errors->any())
-                        <div class="alert alert-danger">
-                            <ul>
-                                @foreach ($errors->all() as $error)
-                                    <li>{{ $error }}</li>
-                                @endforeach
-                            </ul>
-                        </div>
-                    @endif
+                    <div class="text-red">
+                        <ul>
+                            @foreach ($errors->all() as $error)
+                                <div
+                                    class="mb-4 rounded-lg bg-red-50 p-4 text-sm text-red-800 dark:bg-gray-800 dark:text-red-400"
+                                    role="alert"
+                                >
+                                    <span class="font-medium">Warning!</span>
+                                    {{ $error }}
+                                </div>
+                            @endforeach
+                        </ul>
+                    </div>
+                @endif
 
 
                 <div class="flex items-center space-x-4">
