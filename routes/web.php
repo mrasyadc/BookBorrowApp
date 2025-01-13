@@ -59,13 +59,9 @@ Route::middleware('auth')->group(function () {
         //     return redirect()->route('admin.books');
         // });
 
-        Route::get('/user/borrow-transaction', function () {
-            return view('dashboard');
-        })->name('user.borrow-transaction');
+        Route::get('/user/borrow-transaction', [ReportController::class, ''])->name('user.borrow-transaction');
 
-        Route::get('/user/report', function () {
-            return view('dashboard');
-        })->name('user.report');
+        Route::get('/user/report', [ReportController::class, 'userBorrowReports'])->name('user.report');
     });
 });
 

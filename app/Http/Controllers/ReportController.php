@@ -6,6 +6,7 @@ use App\Services\CalculationService;
 use App\Services\ExportService;
 use Artisaninweb\SoapWrapper\Facade;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Config as FacadesConfig;
 
@@ -89,9 +90,10 @@ class ReportController extends Controller
         return $this->exportService->exportToPdf('template.borrow', 'borrow_reports.pdf', $reportsArray, $headers);
     }
 
-    public function userBorrowReports(Request $request)
+    public function userBorrowReports()
     {
-        $userId = $request->route(userId);
+        $user = Auth::user();
+        $userId = $user->id;
         $reports = DB::select('CALL GetUserBorrowReports(?)', [$userId]);
         @dd($reports);
     }
