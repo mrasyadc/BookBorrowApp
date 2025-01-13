@@ -15,6 +15,7 @@
         </style>
     </head>
     <body>
+        <h1 class="mt-24">Borrowed Books Report</h1>
         <table>
             <thead>
                 <tr>
