@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\BookMasterDataController;
+use App\Http\Controllers\ReportController;
 use App\Http\Middleware\CheckUserType;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
@@ -48,7 +49,7 @@ Route::middleware('auth')->group(function () {
         Route::post('/admin/books/delete/{bookId}', [BookMasterDataController::class, 'destroy'])->name('admin.bookmaster.destroy');
         Route::get('/admin/books/create', [BookMasterDataController::class, 'create'])->name('admin.bookmaster.create');
         Route::post('/admin/books/create', [BookMasterDataController::class, 'store'])->name('admin.bookmaster.store');
-        Route::get('/admin/report', function () {})->name('admin.report.read');
+        Route::get('/admin/report', [ReportController::class, 'test'])->name('admin.report.read');
     });
 
     Route::middleware(CheckUserType::class . ':user')->group(function () {
