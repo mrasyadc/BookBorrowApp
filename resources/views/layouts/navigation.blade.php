@@ -16,7 +16,7 @@
                         <x-nav-link :href="route('admin.bookmaster.read')">
                             {{ __('Book Master Data') }}
                         </x-nav-link>
-                        <x-nav-link :href="route('admin.report')">
+                        <x-nav-link :href="route('admin.report.read')">
                             {{ __('Report') }}
                         </x-nav-link>
                     @else
