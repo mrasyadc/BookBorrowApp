@@ -15,10 +15,10 @@ class BorrowTransactionSeeder extends Seeder
     public function run(): void
     {
         BorrowTransaction::create([
-            'user_id' => 2, // admin user
+            'user_id' => 2, // regular user
             'book_id' => 1, // "Introduction to Laravel"
             'borrow_date' => Carbon::now()->subDays(5),
-            'return_date' => Carbon::now()->subDays(3),
+            'return_date' => null,
             'total_cost' => 10000, // Example cost
         ]);
 
