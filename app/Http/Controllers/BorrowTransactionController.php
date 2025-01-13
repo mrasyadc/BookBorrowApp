@@ -63,14 +63,36 @@ class BorrowTransactionController extends Controller
         return view('user.borrowTransaction.create', ['book' => $book]);
     }
 
-    public function returnBookShow($borrowTransactionId)
+    public function returnBookShow()
     {
         // show all books that user borrowed and have not been returned
+        // Fetch unreturned transactions
         $unreturnedTransactions = BorrowTransaction::with(['user', 'book'])
             ->where('user_id', Auth::id())
             ->whereNull('actual_return_date')
             ->get();
 
-        return view('user.borrowTransaction.return', ['unreturnedTransactions' => $unreturnedTransactions]);
+        // Calculate total_cost for each transaction
+        $transactionsWithCost = $unreturnedTransactions->map(function ($transaction) {
+            $borrowDate = \Carbon\Carbon::parse($transaction->borrow_date);
+            $plannedReturnDate = \Carbon\Carbon::parse($transaction->planned_return_date);
+            $now = now();
+
+            // Determine total days
+            $totalDays = $now->greaterThan($plannedReturnDate)
+                ? $borrowDate->diffInDays($now)
+                : $borrowDate->diffInDays($plannedReturnDate);
+
+            // Calculate total cost using calculationService
+            $pricePerDay = $transaction->book->price_per_day;
+            $totalCost = $this->calculationService->multiply($pricePerDay, $totalDays);
+
+            // Add total cost to the transaction for the view
+            $transaction->total_cost = $totalCost;
+
+            return $transaction;
+        });
+
+        return view('user.borrowTransaction.return', ['unreturnedTransactions' => $transactionsWithCost]);
     }
 }

@@ -64,6 +64,7 @@ Route::middleware('auth')->group(function () {
         Route::get('/user/borrow-transaction', [BorrowTransactionController::class, 'index'])->name('user.borrow-transaction');
         Route::post('/user/borrow-transaction', [BorrowTransactionController::class, 'store'])->name('user.borrow-transaction.store');
         Route::get('/user/borrow-transaction/book/{bookId}', [BorrowTransactionController::class, 'userBorrowBookShow'])->name('user.borrow-transaction.book');
+        Route::get('/user/return-transaction', [BorrowTransactionController::class, 'returnBookShow'])->name('user.return-transaction');
 
         Route::get('/user/report', [UserReportController::class, 'userBorrowReports'])->name('user.report');
         Route::get('/user/report/export/excel', [UserReportController::class, 'userBorrowReportsExcel'])->name('user.report.excel');
