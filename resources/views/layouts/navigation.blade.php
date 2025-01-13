@@ -22,7 +22,7 @@
                     @else
                         {{-- TODO: ganti ke routesnya transaksi peminjaman --}}
                         <x-nav-link :href="route('user.borrow-transaction')" :active="request()->routeIs('')">
-                            {{ __('Transaksi Peminjaman') }}
+                            {{ __('Borrow Books') }}
                         </x-nav-link>
                         <x-nav-link :href="route('user.report')">
                             {{ __('Report') }}

@@ -10,8 +10,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Config as FacadesConfig;
 
-
-class ReportController extends Controller
+class UserReportController extends Controller
 {
 
     protected $calculationService;
@@ -23,25 +22,17 @@ class ReportController extends Controller
         $this->calculationService = $calculationService;
         $this->exportService = $exportService;
     }
-    //
+
     public function index()
     {
-        return view('admin.report.report');
+        return view('user.borrowTransaction.read');
     }
 
-    public function allBorrowReports()
+    public function userBorrowReportsExcel()
     {
-        // For all users
-        $reports = DB::select('CALL GetAllBorrowReports');
-        foreach ($reports as $report) {
-            $report->total_cost = $this->calculationService->multiply($report->total_days, $report->price_per_day);
-        }
-        return view('admin.report.report', ['reports' => $reports]);
-    }
-
-    public function allBorrowReportsExcel()
-    {
-        $reports = DB::select('CALL GetAllBorrowReports');
+        $user = Auth::user();
+        $userId = $user->id;
+        $reports = DB::select('CALL GetUserBorrowReports(?)', [$userId]);
 
         // Add calculated field for each report
         foreach ($reports as $report) {
@@ -62,12 +53,14 @@ class ReportController extends Controller
         }
 
         // Export to Excel
-        return $this->exportService->exportToExcel('AllBorrowReports.xlsx', $reportsArray, $headers);
+        return $this->exportService->exportToExcel('UserBorrowReports.xlsx', $reportsArray, $headers);
     }
 
-    public function allBorrowReportsPDF()
+    public function userBorrowReportsPDF()
     {
-        $reports = DB::select('CALL GetAllBorrowReports');
+        $user = Auth::user();
+        $userId = $user->id;
+        $reports = DB::select('CALL GetUserBorrowReports(?)', [$userId]);
 
         // Add calculated field for each report
         foreach ($reports as $report) {
@@ -88,5 +81,17 @@ class ReportController extends Controller
         }
 
         return $this->exportService->exportToPdf('template.borrow', 'borrow_reports.pdf', $reportsArray, $headers);
+    }
+
+    public function userBorrowReports()
+    {
+        $user = Auth::user();
+        $userId = $user->id;
+        $reports = DB::select('CALL GetUserBorrowReports(?)', [$userId]);
+
+        foreach ($reports as $report) {
+            $report->total_cost = $this->calculationService->multiply($report->total_days, $report->price_per_day);
+        }
+        return view('user.report.report', ['reports' => $reports]);
     }
 }

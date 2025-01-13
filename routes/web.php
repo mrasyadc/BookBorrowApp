@@ -3,6 +3,7 @@
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\BookMasterDataController;
 use App\Http\Controllers\ReportController;
+use App\Http\Controllers\UserReportController;
 use App\Http\Middleware\CheckUserType;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
@@ -59,9 +60,11 @@ Route::middleware('auth')->group(function () {
         //     return redirect()->route('admin.books');
         // });
 
-        Route::get('/user/borrow-transaction', [ReportController::class, ''])->name('user.borrow-transaction');
+        Route::get('/user/borrow-transaction', [UserReportController::class, 'index'])->name('user.borrow-transaction');
 
-        Route::get('/user/report', [ReportController::class, 'userBorrowReports'])->name('user.report');
+        Route::get('/user/report', [UserReportController::class, 'userBorrowReports'])->name('user.report');
+        Route::get('/admin/report/export/excel', [UserReportController::class, 'userBorrowReportsExcel'])->name('user.report.excel');
+        Route::get('/admin/report/export/pdf', [UserReportController::class, 'userBorrowReportsPDF'])->name('user.report.pdf');
     });
 });
 
