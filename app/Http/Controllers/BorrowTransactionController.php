@@ -62,4 +62,15 @@ class BorrowTransactionController extends Controller
         $book = Book::findOrFail($bookId);
         return view('user.borrowTransaction.create', ['book' => $book]);
     }
+
+    public function returnBookShow($borrowTransactionId)
+    {
+        // show all books that user borrowed and have not been returned
+        $unreturnedTransactions = BorrowTransaction::with(['user', 'book'])
+            ->where('user_id', Auth::id())
+            ->whereNull('actual_return_date')
+            ->get();
+
+        return view('user.borrowTransaction.return', ['unreturnedTransactions' => $unreturnedTransactions]);
+    }
 }
