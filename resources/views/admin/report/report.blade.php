@@ -13,6 +13,7 @@
                 >
                     Export to Excel
                 </button>
+
                 <button
                     onclick="window.location='{{ route('admin.report.pdf') }}'"
                     class="rounded-lg bg-red-700 px-5 py-2.5 text-center text-sm font-medium text-white hover:bg-red-800 focus:outline-none focus:ring-4 focus:ring-red-300 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-800"
@@ -35,11 +36,13 @@
                                 <th scope="col" class="px-6 py-3">Borrow date</th>
                                 <th scope="col" class="px-6 py-3">Total Days</th>
                                 <th scope="col" class="px-6 py-3">Total Price</th>
+                                <th scope="col" class="px-6 py-3">Is Late</th>
                                 <th scope="col" class="px-6 py-3">Is Returned</th>
                             </tr>
                         </thead>
                         <tbody>
                             @foreach ($reports as $report)
+                                {{-- @dd($report) --}}
                                 <tr
                                     class="border-b bg-white hover:bg-gray-50 dark:border-gray-700 dark:bg-gray-800 dark:hover:bg-gray-600"
                                 >
@@ -68,7 +71,20 @@
                                         {{ Number::currency($report->total_cost, in: $currency) }}
                                     </td>
                                     <td class="px-6 py-4">
-                                        @if ($report->return_date)
+                                        @if ($report->status === 'On Time')
+                                            <div class="flex items-center">
+                                                <div class="me-2 h-2.5 w-2.5 rounded-full bg-green-500"></div>
+                                                On Time
+                                            </div>
+                                        @else
+                                            <div class="flex items-center">
+                                                <div class="me-2 h-2.5 w-2.5 rounded-full bg-red-500"></div>
+                                                Late
+                                            </div>
+                                        @endif
+                                    </td>
+                                    <td class="px-6 py-4">
+                                        @if ($report->actual_return_date)
                                             <div class="flex items-center">
                                                 <div class="me-2 h-2.5 w-2.5 rounded-full bg-green-500"></div>
                                                 Done

@@ -65,8 +65,8 @@ Route::middleware('auth')->group(function () {
         Route::post('/user/borrow-transaction/{bookId}', [BorrowTransactionController::class, 'store'])->name('user.borrow-transaction.store');
 
         Route::get('/user/report', [UserReportController::class, 'userBorrowReports'])->name('user.report');
-        Route::get('/admin/report/export/excel', [UserReportController::class, 'userBorrowReportsExcel'])->name('user.report.excel');
-        Route::get('/admin/report/export/pdf', [UserReportController::class, 'userBorrowReportsPDF'])->name('user.report.pdf');
+        Route::get('/user/report/export/excel', [UserReportController::class, 'userBorrowReportsExcel'])->name('user.report.excel');
+        Route::get('/user/report/export/pdf', [UserReportController::class, 'userBorrowReportsPDF'])->name('user.report.pdf');
     });
 });
 
