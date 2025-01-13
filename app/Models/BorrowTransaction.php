@@ -13,7 +13,8 @@ class BorrowTransaction extends Model
         'user_id',
         'book_id',
         'borrow_date',
-        'return_date',
+        'planned_return_date',
+        'actual_return_date',
         'total_cost',
     ];
 

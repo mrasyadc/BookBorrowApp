@@ -17,16 +17,25 @@ class CreateProceduresForReports extends Migration
             DROP PROCEDURE IF EXISTS GetUserBorrowReports;
             CREATE PROCEDURE GetUserBorrowReports(IN p_user_id INT)
             SELECT
-                bt.id as transaction_id,
-                u.name as borrower_name,
-                u.email as borrower_email,
-                b.title as book_title,
-                b.author as book_author,
+                bt.id AS transaction_id,
+                u.name AS borrower_name,
+                u.email AS borrower_email,
+                b.title AS book_title,
+                b.author AS book_author,
                 b.price_per_day,
                 bt.borrow_date,
-                bt.return_date,
-                bt.total_cost,
-                DATEDIFF(IFNULL(bt.return_date, CURDATE()), bt.borrow_date) as total_days
+                bt.planned_return_date,
+                bt.actual_return_date,
+                -- Calculate total_days using planned_return_date or CURDATE() if overdue
+                DATEDIFF(
+                    GREATEST(IFNULL(bt.planned_return_date, CURDATE()), CURDATE()),
+                    bt.borrow_date
+                ) AS total_days,
+                -- Calculate total_cost
+                DATEDIFF(
+                    GREATEST(IFNULL(bt.planned_return_date, CURDATE()), CURDATE()),
+                    bt.borrow_date
+                ) * b.price_per_day AS total_cost
             FROM borrow_transactions bt
             INNER JOIN users u ON bt.user_id = u.id
             INNER JOIN books b ON bt.book_id = b.id
@@ -39,16 +48,25 @@ class CreateProceduresForReports extends Migration
             DROP PROCEDURE IF EXISTS GetAllBorrowReports;
             CREATE PROCEDURE GetAllBorrowReports()
             SELECT
-                bt.id as transaction_id,
-                u.name as borrower_name,
-                u.email as borrower_email,
-                b.title as book_title,
-                b.author as book_author,
+                bt.id AS transaction_id,
+                u.name AS borrower_name,
+                u.email AS borrower_email,
+                b.title AS book_title,
+                b.author AS book_author,
                 b.price_per_day,
                 bt.borrow_date,
-                bt.return_date,
-                bt.total_cost,
-                DATEDIFF(IFNULL(bt.return_date, CURDATE()), bt.borrow_date) as total_days
+                bt.planned_return_date,
+                bt.actual_return_date,
+                -- Calculate total_days using planned_return_date or CURDATE() if overdue
+                DATEDIFF(
+                    GREATEST(IFNULL(bt.planned_return_date, CURDATE()), CURDATE()),
+                    bt.borrow_date
+                ) AS total_days,
+                -- Calculate total_cost
+                DATEDIFF(
+                    GREATEST(IFNULL(bt.planned_return_date, CURDATE()), CURDATE()),
+                    bt.borrow_date
+                ) * b.price_per_day AS total_cost
             FROM borrow_transactions bt
             INNER JOIN users u ON bt.user_id = u.id
             INNER JOIN books b ON bt.book_id = b.id
