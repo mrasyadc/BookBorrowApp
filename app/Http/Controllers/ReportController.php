@@ -13,13 +13,18 @@ class ReportController extends Controller
         return view('admin.report.report');
     }
 
-    public function test()
+    public function allBorrowReports()
     {
         // For all users
         $reports = DB::select('CALL GetAllBorrowReports');
         // @dd($reports);
         // For specific user
-        $userId = 2;
+        return view('admin.report.report', ['reports' => $reports]);
+    }
+
+    public function userBorrowReports(Request $request)
+    {
+        $userId = $request->route(userId);
         $reports = DB::select('CALL GetUserBorrowReports(?)', [$userId]);
         @dd($reports);
     }

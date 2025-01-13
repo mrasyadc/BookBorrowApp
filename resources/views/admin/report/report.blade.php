@@ -1,7 +1,7 @@
 <x-app-layout>
     <x-slot name="header">
         <h2 class="text-xl font-semibold leading-tight text-gray-800 dark:text-gray-200">
-            {{ __('Book Master Data') }}
+            {{ __('Borrow Transacation Report') }}
         </h2>
     </x-slot>
     <div class="py-12">
@@ -16,35 +16,55 @@
                                 </th>
                                 <th scope="col" class="px-6 py-3">Book Name</th>
                                 <th scope="col" class="px-6 py-3">Author</th>
-                                <th scope="col" class="px-6 py-3">Price (Indonesian Rupiah)</th>
+                                <th scope="col" class="px-6 py-3">Borrower Name</th>
+                                <th scope="col" class="px-6 py-3">Price per day</th>
+                                <th scope="col" class="px-6 py-3">Borrow date</th>
+                                <th scope="col" class="px-6 py-3">Total Days</th>
+                                <th scope="col" class="px-6 py-3">Total Price</th>
+                                <th scope="col" class="px-6 py-3">Is Returned</th>
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach ($books as $book)
+                            @foreach ($reports as $report)
                                 <tr
                                     class="border-b bg-white hover:bg-gray-50 dark:border-gray-700 dark:bg-gray-800 dark:hover:bg-gray-600"
                                 >
                                     <td class="w-4 p-4">
-                                        {{ $book->id }}
+                                        {{ $report->transaction_id }}
                                     </td>
                                     <th
                                         scope="row"
                                         class="whitespace-nowrap px-6 py-4 font-medium text-gray-900 dark:text-white"
                                     >
-                                        {{ $book->title }}
+                                        {{ $report->book_title }}
                                     </th>
-                                    <td class="px-6 py-4">{{ $book->author }}</td>
+                                    <td class="px-6 py-4">{{ $report->book_author }}</td>
+                                    <td class="px-6 py-4">{{ $report->borrower_name }}</td>
                                     {{-- show price per day in IDR format --}}
                                     <td class="px-6 py-4">
-                                        {{ Number::currency($book->price_per_day, in: $currency) }}
+                                        {{ Number::currency($report->price_per_day, in: $currency) }}
                                     </td>
-                                    <td class="flex items-center px-6 py-4">
-                                        <a
-                                            href="{{ route('admin.bookmaster.edit', $book->id) }}"
-                                            class="font-medium text-blue-600 hover:underline dark:text-blue-500"
-                                        >
-                                            Edit
-                                        </a>
+                                    <td class="px-6 py-4">
+                                        {{ $report->borrow_date }}
+                                    </td>
+                                    <td class="px-6 py-4">
+                                        {{ $report->total_days }}
+                                    </td>
+                                    <td class="px-6 py-4">
+                                        {{ Number::currency($report->total_cost, in: $currency) }}
+                                    </td>
+                                    <td class="px-6 py-4">
+                                        @if ($report->return_date)
+                                            <div class="flex items-center">
+                                                <div class="me-2 h-2.5 w-2.5 rounded-full bg-green-500"></div>
+                                                Done
+                                            </div>
+                                        @else
+                                            <div class="flex items-center">
+                                                <div class="me-2 h-2.5 w-2.5 rounded-full bg-red-500"></div>
+                                                No
+                                            </div>
+                                        @endif
                                     </td>
                                 </tr>
                             @endforeach
