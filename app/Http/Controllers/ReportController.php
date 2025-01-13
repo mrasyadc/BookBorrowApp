@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Services\CalculationService;
+use App\Services\ExportService;
 use Artisaninweb\SoapWrapper\Facade;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -13,10 +14,13 @@ class ReportController extends Controller
 {
 
     protected $calculationService;
+    protected $exportService;
 
-    public function __construct(CalculationService $calculationService)
+
+    public function __construct(CalculationService $calculationService, ExportService $exportService)
     {
         $this->calculationService = $calculationService;
+        $this->exportService = $exportService;
     }
     //
     public function index()
@@ -32,6 +36,32 @@ class ReportController extends Controller
             $report->total_cost = $this->calculationService->multiply($report->total_days, $report->price_per_day);
         }
         return view('admin.report.report', ['reports' => $reports]);
+    }
+
+    public function allBorrowReportsExcel()
+    {
+        $reports = DB::select('CALL GetAllBorrowReports');
+
+        // Add calculated field for each report
+        foreach ($reports as $report) {
+            $report->total_cost = $this->calculationService->multiply($report->total_days, $report->price_per_day);
+        }
+
+        // Convert reports to an array to dynamically extract headers
+        $reportsArray = array_map(function ($report) {
+            return (array) $report; // Cast each object to an array
+        }, $reports);
+
+        // Extract headers from the first report
+        $headers = !empty($reportsArray) ? array_keys($reportsArray[0]) : [];
+
+        // Add 'Total Cost' to the headers (if it doesn't already exist)
+        if (!in_array('total_cost', $headers)) {
+            $headers[] = 'total_cost';
+        }
+
+        // Export to Excel
+        return $this->exportService->exportToExcel('AllBorrowReports.xlsx', $reportsArray, $headers);
     }
 
     public function userBorrowReports(Request $request)
